@@ -1,16 +1,9 @@
-
-:root {
-    /*Between magenta and purple, good contrast for light and dark theme.*/
-    --kolibri-accent-color: #de2d9d;
-    /*for everything that is calculated and should not be indexed, close to normal text color, only subtly distinct*/
-    --kolibri-output-color: #5F2EEA;
-}
+@import "./css/kolibri-base.css";
 
 body {
-    max-width: 60em;
-    margin: auto;
-    font-family: "Helvetica Neue", "sans-serif";
     background-color: white; /*only needed for chrome :-(*/
+    max-width: 42em;
+    margin:    3em auto 3em auto;
 }
 
 main {
@@ -37,53 +30,37 @@ fieldset:disabled {
     opacity: 0.5;
 }
 
-:invalid {
-    border-color: var(--kolibri-accent-color);
-}
-
-input:invalid {
-    border-color: transparent transparent var(--kolibri-accent-color) transparent;
-    position: relative;
-    overflow: visible;
-}
-
-input:invalid::before {
-    content: "";
-    position: absolute;
-    top: -.35ch;
-    left: -.75ch;
-    color: white;
-    background-color: var(--kolibri-accent-color);
-    width: 1ch;
-    height: 1ch;
-    border-radius: 50%;
-}
-
 output {
-    color: var(--kolibri-output-color);
+    color: var(--kolibri-color-output);
+    font-variant-numeric: tabular-nums;
 }
 
+/*noinspection ALL*/
 .darkTheme {
     filter: invert(85%) hue-rotate(180deg);
 }
 
 em {
-    color: var(--kolibri-accent-color);
+    color: var(--kolibri-color-accent);
 }
 
 .rules *:nth-child(even) {
-    color: var(--kolibri-accent-color);
+    color: var(--kolibri-color-accent);
 }
 
-header img {
-    position: absolute;
-    top: 3em;
-    margin-left: 38em;
+header div.kolibri-logo {
+    height:         150px;
+    position:       absolute;
+    top:            6em;
+    margin-left:    39em;
 }
 
 .rules {
     display: grid;
     grid-column-gap: 2em;
-    grid-template-columns: max-content max-content;
+    grid-template-columns: auto max-content;
 }
 
+label ~ span {
+    margin-left: 1em;
+}

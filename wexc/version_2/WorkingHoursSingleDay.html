@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Working Hours Single Day</title>
-    <link rel="shortcut icon" href="../img/logo/logo-60x54.png" type="image/svg" />
-    <link rel="stylesheet"    href="../WorkingHours.css" />
+    <title>Workday</title>
+    <link rel="shortcut icon" type="image/png" href="../img/logo/logo-60x54.png"/>
+    <link rel="stylesheet"                     href="../WorkingHours.css" />
 </head>
 <body>
 <header>
-    <img src="../img/logo/logo.svg" alt="Kolibri Logo" height="171">
+    <div class="kolibri-logo"></div>
 </header>
 <main>
 
-    <h1>Working Hours Single Day</h1>
+    <h1>Workday Projector Test Bench</h1>
 
     <fieldset name="workingHoursInput" id="workingHoursInput">
         <legend>Working Hours</legend>
@@ -37,41 +37,73 @@
         <label for="checkDarkTheme">Dark Theme</label>
     </div>
 
+    <h2>Projecting Work Hours for a Day</h2>
+    <p>
+        We manage four time entries that need to fulfil a shared purpose: capturing and
+        visualizing the working hours in the morning and in the afternoon. These time entries have to
+        comply to constraints that are given to us as business rules (see below).
+    </p>
+    <p>
+        Kolibri allows us to keep two things totally separate: what to display and how to display.
+        The "what" part  with model and business rules is in the
+        <a href="https://github.com/WebEngineering-FHNW/Kolibri/tree/main/docs/src/examples/workday/dayController.js"
+        >dayController</a>. The "how" part with view and binding
+        is in the
+        <a href="https://github.com/WebEngineering-FHNW/Kolibri/tree/main/docs/src/examples/workday/simpleDayProjector.js"
+        >simpleDayProjector</a>, which is an instance of
+        the <a href="https://dierk.github.io/Home/projectorPattern/ProjectorPattern.html">projector pattern</a>.
+    </p>
+    <p>
+        Since controller and projector are separate, they can be separately
+        <a href="https://github.com/WebEngineering-FHNW/Kolibri/tree/main/docs/src/examples/workday/dayControllerTest.js">tested</a>.
+        Also, the simple projector that just uses simple input fields, can be easily
+        replaced in the
+        <a href="https://github.com/WebEngineering-FHNW/Kolibri/tree/main/docs/src/examples/workday/starter.js"
+        >starter</a> with a more elaborate projector.
+        When this happens, the controller - and thus all logic - remains untouched.
+    </p>
 
-    <h2>Business rules</h2>
+    <h2>Business Rules</h2>
     <div class="rules">
         <div>Time values between 0:00 and 24:00, are required, cannot be empty.</div> <div>otherwise invalid</div>
-        <div>AM Start <= AM End.</div>                        <div>automatically enforced</div>
-        <div>AM End <= PM Start.</div>                        <div>automatically enforced</div>
-        <div>PM Start <= PM End.</div>                        <div>automatically enforced</div>
+        <div>AM Start &lt; = AM End.</div>                    <div>automatically enforced</div>
+        <div>AM End &lt; = PM Start.</div>                    <div>automatically enforced</div>
+        <div>PM Start &lt; = PM End.</div>                    <div>automatically enforced</div>
         <div>Start not earlier than 4:00. </div>              <div>otherwise invalid</div>
         <div>End not later than 22:00. </div>                 <div>otherwise invalid</div>
         <div>Lunch break must be at least 40 minutes.</div>   <div>automatically enforced</div>
         <div>Total time must not exceed 12 hours. </div>      <div>otherwise invalid</div>
     </div>
 
-    <div>
-        <p>Here we introduce proper MVC. We even make use of the Projector Pattern such that
-            you can replace the currently simple projector as used in <em>starter.js</em> with your
-            own view and binding <strong>by only changing the import file name and nothing else</strong>!
-            Your component should work like a drop-in replacement.
-        </p>
-        <p>In particular, the controller, the model, the business rules, and the existing test cases can remain untouched.</p>
-        <p>As a side note you might observe that the 'simpleDayProjector' uses 'min' and 'max' attributes in the view's
-            input elements, as opposed to enforcing these constraints through business rules in the controller.
-            This is an example of using specialized view capabilities that some of your designs might also have.
-            I hope we will find time to discuss the benefits and drawbacks of this approach.
-        </p>
-    </div>
+
+    <h2>Try this</h2>
+    <p>
+        Set the AM Start to 00:00, which violates the "not more than 12 hours" rule.
+        Observe how all time entries become invalid as well as the whole fieldset (left vertical bar).
+    </p>
+    <p>
+        Set the PM End to 16:00 and the AM Start to 03:00, which violates the "no start before 04:00" rule.
+        Observe how only the AM Start field and the fieldset become invalid.
+    </p>
+    <p>
+        Set the PM End to 13:00 and delete the AM Start to --:--, with the DEL or Backspace key.
+        Then check/uncheck "Required" and observe
+        how the AM Start becomes invalid when it is required but has no value.
+    </p>
+
 
     <script>
+        const checkDisabled   = document.getElementById("checkDisabled");
+        const checkReadOnly   = document.getElementById("checkReadOnly");
+        const checkRequired   = document.getElementById("checkRequired");
+        const checkDarkTheme  = document.getElementById("checkDarkTheme");
         checkDisabled.onclick = _ => checkDisabled.checked
                                      ? workingHoursInput.setAttribute("disabled", "on")                  // one can disable a fieldset
                                      : workingHoursInput.removeAttribute("disabled");
 
         const inputs = () => workingHoursInput.querySelectorAll("input");
         checkReadOnly.onclick = _ => checkReadOnly.checked
-                                     ? inputs().forEach(input => input.setAttribute("readonly", "on"))     // only inputs can be set to readonly
+                                     ? inputs().forEach(input => input.setAttribute("readonly", "on"))  // only inputs can be set to readonly
                                      : inputs().forEach(input => input.removeAttribute("readonly"));
 
         checkRequired.onclick = _ => checkRequired.checked

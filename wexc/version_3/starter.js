@@ -1,7 +1,7 @@
 
-import { projectWeek } from "./simpleProjector.js"
-// todo: the string above   ^^^^^^^^^^^^^^^^^^^^^^    is the only thing that you are allowed to change !
-// Note that in particular, controller (and thus model), business rules, and existing tests are not allowed to change.
+import { WeekProjector } from "./simpleWeekProjector.js"
+//       the string above      ^^^^^^^^^^^^^^^^^^^^^^^^   is the only thing that you need to change
+//       if you want to change the projector (look and feel) for how to enter and display times of the day
 
 import { WeekController } from "./weekController.js"
 
@@ -10,4 +10,4 @@ const workingHoursInput = document.getElementById("workingHoursInput");
 
 const weekController = WeekController();
 
-projectWeek(weekController, workingHoursInput);
+workingHoursInput.append(...WeekProjector.projectWeek(weekController));
